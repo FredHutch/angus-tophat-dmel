@@ -1,10 +1,34 @@
+task download_sample {
+  String sample_name
+  String dlr = "$"
+  command <<<
+    # ftp://ftp.sra.ebi.ac.uk/vol1/fastq/<dir1>[/<dir2>]/<run accession>
+    mkdir ${sample_name}
+
+    dir1=${sample_name}
+    dir1=${dlr}{dir1::6}
+    dir2=${sample_name}
+    dir2="00${dlr}{dir2:9}"
+
+    cd ${sample_name}
+
+    echo ftp://ftp.sra.ebi.ac.uk/vol1/fastq/${dlr}{dir1}/${dlr}{dir2}/${sample_name}/${sample_name}_1.fastq.gz
+    curl -O -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/${dlr}{dir1}/${dlr}{dir2}/${sample_name}/${sample_name}_1.fastq.gz
+    echo ftp://ftp.sra.ebi.ac.uk/vol1/fastq/${dlr}{dir1}/${dlr}{dir2}/${sample_name}/${sample_name}_2.fastq.gz
+    curl -O -L ftp://ftp.sra.ebi.ac.uk/vol1/fastq/${dlr}{dir1}/${dlr}{dir2}/${sample_name}/${sample_name}_2.fastq.gz
+  >>>
+  output {
+    File left = "${sample_name}/${sample_name}_1.fastq.gz"
+    File right = "${sample_name}/${sample_name}_2.fastq.gz"
+  }
+}
+
 task tophat {
   String sample_name
-  String data_dir
   File gtf
   String index
-  File left = "${data_dir}/${sample_name}/${sample_name}_1.fastq.gz"
-  File right = "${data_dir}/${sample_name}/${sample_name}_2.fastq.gz"
+  File left = "${sample_name}/${sample_name}_1.fastq.gz"
+  File right = "${sample_name}/${sample_name}_2.fastq.gz"
   Int nprocs
   command {
     module load TopHat/2.1.2-foss-2016b Bowtie2/2.3.4.3-foss-2016b
@@ -30,5 +54,6 @@ task tophat {
 }
 
 workflow angus_tophat_dmel {
-  call tophat
+  call download_sample
+  #call tophat
 }

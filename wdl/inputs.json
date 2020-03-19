@@ -1,0 +1,7 @@
+{
+  "angus_tophat_dmel.download_sample.sample_name": "SRR1991029",
+  "angus_tophat_dmel.tophat.gtf": "/home/mrg/Fast/angus-tophat-dmel/dmel-all-r6.16.gtf",
+  "angus_tophat_dmel.tophat.nprocs": "4",
+  "angus_tophat_dmel.tophat.index": "/home/mrg/Fast/angus-tophat-dmel/index/dmel_genome_bowtie2",
+  "angus_tophat_dmel.tophat.sample_name": "SRR1991029"
+}
