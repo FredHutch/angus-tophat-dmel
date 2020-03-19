@@ -27,8 +27,8 @@ task tophat {
   String sample_name
   File gtf
   String index
-  File left = "${sample_name}/${sample_name}_1.fastq.gz"
-  File right = "${sample_name}/${sample_name}_2.fastq.gz"
+  File left
+  File right
   Int nprocs
   command {
     module load TopHat/2.1.2-foss-2016b Bowtie2/2.3.4.3-foss-2016b
@@ -55,5 +55,9 @@ task tophat {
 
 workflow angus_tophat_dmel {
   call download_sample
-  #call tophat
+  call tophat {
+    input:
+      left = download_sample.left,
+      right = download_sample.right
+  }
 }
