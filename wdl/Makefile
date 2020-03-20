@@ -7,4 +7,4 @@ inputs:
 run:
 	java -jar ../../../bin/cromwell-47.jar run angus-tophat-dmel.wdl  -i ./inputs.json
 
-.PHONY: validate run
+.PHONY: validate run inputs
